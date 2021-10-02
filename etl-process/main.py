@@ -1,80 +1,48 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
+import src.config as conf
+from src.query import query
 
 
+if __name__ == '__main__':
+    db = conf.get("database")
 
-appName = 'Python Spark SQL basic example'
+    spark = SparkSession \
+        .builder \
+        .appName("etl process") \
+        .getOrCreate()
+    
+    ##### Extract #####
+    read_table = spark.read \
+        .format(db.get("format")) \
+        .option("url", db.get("url")) \
+        .option("dbtable", f"({query}) tmp") \
+        .option("user", db.get("user")) \
+        .option("password", db.get("password")) \
+        .option("driver", db.get("driver")) \
+        .load()
+    
 
-spark_jars = '/home/sade/.local/share/DBeaverData/drivers/maven/maven-central/org.postgresql/postgresql-42.2.5.jar'
-
-spark = SparkSession \
-    .builder \
-    .appName(appName) \
-    .config("spark.jars", spark_jars) \
-    .getOrCreate()
-
-
-query = """
-(SELECT
-	oi.id,
-	o.user_id,
-	p.category_id,
-	p.product_id
-FROM
-	order_items oi,
-	orders o,
-	products p
-WHERE
-	oi.order_id = o.order_id
-	AND oi.product_id = p.product_id) temp
-"""
-# Yukarıdaki Query bir subquery' miş o yüzden öyle yazılıyor
+    ##### Transform #####
+    user_splited = split(read_table["user_id"], "-")
+    category_splited = split(read_table["category_id"], "-")
+    product_splited = split(read_table["product_id"], "-")
 
 
-format_ = 'jdbc'
-url = 'jdbc:postgresql://localhost:5432/data-db'
-user = 'postgres'
-password = '123456'
-driver = 'org.postgresql.Driver'
+    etl_df = read_table.select(
+        "id",
+        user_splited.getItem(1).cast("integer").alias("user_id"),
+        category_splited.getItem(1).cast("integer").alias("category_id"),
+        product_splited.getItem(1).cast("integer").alias("product_id")
+    )
 
-
-read_table = spark.read \
-    .format(format_) \
-    .option("url", url) \
-    .option("dbtable", query) \
-    .option("user", user) \
-    .option("password", password) \
-    .option("driver", driver) \
-    .load()
-
-read_table.printSchema()
-
-
-user_splited = split(read_table["user_id"], "-")
-category_splited = split(read_table["category_id"], "-")
-product_splited = split(read_table["product_id"], "-")
-
-
-etl_df = read_table.select(
-    "id",
-    user_splited.getItem(1).cast("integer").alias("user_id"),
-    category_splited.getItem(1).cast("integer").alias("category_id"),
-    product_splited.getItem(1).cast("integer").alias("product_id")
-)
-
-etl_df.printSchema()
-
-
-# Şimdi elde ettiğimiz DF' ı PostgreSQL' e yazalım.
-# Burası tam olarak ne yapar bilmiyorum.
-
-write_table = 'bestseller_product'
-
-etl_df.write.format(format_) \
-    .option("url", url) \
-    .option("dbtable", write_table) \
-    .option("user", user) \
-    .option("password", password) \
-    .option("driver", driver) \
-    .mode('append') \
-    .save()
+    ##### Load #####
+    etl_df.write \
+        .format(db.get("format")) \
+        .option("url", db.get("url")) \
+        .option("dbtable", db.get("table")) \
+        .option("user", db.get("user")) \
+        .option("password", db.get("password")) \
+        .option("driver", db.get("driver")) \
+        .mode('append') \
+        .save()

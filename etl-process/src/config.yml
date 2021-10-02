@@ -1,0 +1,7 @@
+database:
+  format: jdbc
+  url: jdbc:postgresql://localhost:5432/data-db
+  driver: org.postgresql.Driver
+  user: postgres
+  password: 123456
+  table: bestseller_product
