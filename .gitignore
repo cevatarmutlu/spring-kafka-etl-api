@@ -1,0 +1,61 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.mvn
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+
+
+# IntelliJ project files
+out
+gen
+gradle-cache/
+log-data
+nodes70*.conf
+dump.rdb
+appendonly.aof
+70*.log
+*.log.*
+*.pid
+# Gradle
+######################
+.gradle/
+/build/
+**/build/
+#Docker
+docker/prod/share
+
+/target/
+
+product-views.json
+recommendation-software-and-data-engineer-case/
+progress
