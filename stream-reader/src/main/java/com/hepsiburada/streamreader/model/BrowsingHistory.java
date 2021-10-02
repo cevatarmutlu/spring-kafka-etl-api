@@ -21,9 +21,12 @@ public class BrowsingHistory {
 
     @Id
     private int userId;
+
     @Id
     private int productId;
+
     private int categoryId;
+
     @Id
     private Timestamp timestamp;
 

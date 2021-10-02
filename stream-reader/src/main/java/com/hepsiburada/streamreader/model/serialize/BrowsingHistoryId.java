@@ -1,9 +1,6 @@
 package com.hepsiburada.streamreader.model.serialize;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -11,11 +8,12 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class BrowsingHistoryId implements Serializable {
 
-    private final int userId;
-    private final int productId;
-    private final Timestamp timestamp;
+    private int userId;
+    private int productId;
+    private Timestamp timestamp;
 
 }

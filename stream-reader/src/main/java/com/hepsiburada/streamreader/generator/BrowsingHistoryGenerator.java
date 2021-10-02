@@ -28,9 +28,10 @@ public class BrowsingHistoryGenerator {
     }
 
     private int getCategoryId() {
-//        service.getCategoryId(this.event.getProperties().getProductid()).get(0);
-        System.out.println();
-        return 3;
+        return Integer.parseInt(
+                ((String) service.getCategoryId(this.event.getProperties().getProductid()).get(0))
+                        .split("-")[1]
+        );
     }
 
     private Timestamp getTimestamp() {

@@ -19,6 +19,9 @@ public class ViewProducerApplication implements CommandLineRunner {
 	@Value("${json.path}")
 	String jsonPath;
 
+	@Value("${kafka.topic}")
+	private String topic;
+
 	@Autowired
 	KafkaProducer kafkaProducer;
 
@@ -38,7 +41,7 @@ public class ViewProducerApplication implements CommandLineRunner {
 			Event event = it.nextValue();
 			event.setTimestamp(new Timestamp(System.currentTimeMillis()).getTime());
 
-			kafkaProducer.send(event);
+			kafkaProducer.send(topic, event);
 
 			Thread.sleep(1000);
 		}
