@@ -9,7 +9,6 @@ ETL-Process, implements ETL to `orders`, `products` and `order_items` tables. Th
 ## Dependencies
 
     Python3
-    Java
     Spark
 
 ## Install
