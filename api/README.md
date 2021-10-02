@@ -30,9 +30,9 @@ DELETE FROM browsing_history
 WHERE user_id = :userId AND product_id = :productId
 ```
 
-#### Bestseller Product
+### Bestseller Product
 
-##### If user has history
+#### If user has history
 
 ```roomsql
 SELECT foo.product_id FROM (
@@ -51,7 +51,7 @@ ORDER BY count(*) DESC
 LIMIT 10
 ```
 
-##### If user has not history
+#### If user has not history
 
 ```roomsql
 SELECT foo.product_id FROM (
