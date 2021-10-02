@@ -3,6 +3,7 @@ package com.hepsiburada.api.repository;
 import com.hepsiburada.api.model.BestsellerProduct;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface BestsellerProductRepository extends CrudRepository<BestsellerPr
                         "SELECT user_id, product_id FROM bestseller_product \n" +
                         "WHERE category_id IN (\n" +
                             "SELECT category_id FROM browsing_history bh \n" +
-                            "WHERE user_id = 103\n" +
+                            "WHERE user_id = :userId\n" +
                             "GROUP BY category_id, product_id\n" +
                             "ORDER BY count(product_id) DESC\n" +
                             "LIMIT 3\n" +
@@ -25,7 +26,7 @@ public interface BestsellerProductRepository extends CrudRepository<BestsellerPr
                     "LIMIT 10",
             nativeQuery = true
     )
-    List<?> getBestsellerProductsIfUserHistoryExist(int userId);
+    List<?> getBestsellerProductsIfUserHistoryExist(@Param("userId") int userId);
 
 
     @Query(
