@@ -32,7 +32,7 @@ WHERE user_id = :userId AND product_id = :productId
 
 ### Bestseller Product
 
-#### If user has history
+#### GET REQUEST QUERY: If user has history
 
 ```roomsql
 SELECT foo.product_id FROM (
@@ -51,7 +51,7 @@ ORDER BY count(*) DESC
 LIMIT 10
 ```
 
-#### If user has not history
+#### GET REQUEST QUERY: If user has not history
 
 ```roomsql
 SELECT foo.product_id FROM (
