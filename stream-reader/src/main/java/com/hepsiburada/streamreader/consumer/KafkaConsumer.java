@@ -29,17 +29,19 @@ public class KafkaConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
     private CountDownLatch latch = new CountDownLatch(1);
+    private Event payload = null;
 
     @KafkaListener(topics = "${kafka.topic}", id = "${kafka.group-id}")
-    public void receive(@Payload Event event) {
-        LOGGER.info("received data: {} ", event);
+    public void receive(@Payload Event payload) {
+        LOGGER.info("received data: {} ", payload);
 
         latch.countDown();
 
-        BrowsingHistoryGenerator generator = new BrowsingHistoryGenerator(event, productService);
+        BrowsingHistoryGenerator generator = new BrowsingHistoryGenerator(payload, productService);
         BrowsingHistory history = generator.generate();
         historyService.saveOrUpdate(history);
 
+        setPayload(payload);
         LOGGER.info("write data: {} ", history);
     }
 }

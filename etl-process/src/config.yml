@@ -4,4 +4,3 @@ database:
   driver: org.postgresql.Driver
   user: postgres
   password: 123456
-  table: bestseller_product

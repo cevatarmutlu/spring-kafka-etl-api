@@ -14,37 +14,9 @@ import java.io.File;
 import java.sql.Timestamp;
 
 @SpringBootApplication
-public class ViewProducerApplication implements CommandLineRunner {
-
-	@Value("${json.path}")
-	String jsonPath;
-
-	@Value("${kafka.topic}")
-	private String topic;
-
-	@Autowired
-	KafkaProducer kafkaProducer;
+public class ViewProducerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ViewProducerApplication.class, args);
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
-		JsonMapper mapper = new JsonMapper();
-		File input = new File(jsonPath);
-
-		MappingIterator<Event> it = mapper.readerFor(Event.class).readValues(input);
-
-		while (it.hasNextValue()) {
-
-			Event event = it.nextValue();
-			event.setTimestamp(new Timestamp(System.currentTimeMillis()).getTime());
-
-			kafkaProducer.send(topic, event);
-
-			Thread.sleep(1000);
-		}
-
 	}
 }
