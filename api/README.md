@@ -73,7 +73,7 @@ Response:
 
 ##### Query
 
-```roomsql
+```sql
 SELECT product_id FROM browsing_history
 WHERE user_id = :userId
 ORDER BY timestamp DESC
@@ -104,7 +104,7 @@ If product deleted is unsuccessful then return `"success": false`.
 
 ##### Query
 
-```roomsql
+```sql
 DELETE FROM browsing_history
 WHERE user_id = :userId AND product_id = :productId
 ```
@@ -133,7 +133,7 @@ Response:
 
 ##### Query
 
-```roomsql
+```sql
 SELECT foo.product_id FROM (
     SELECT user_id, product_id FROM bestseller_product
     WHERE category_id IN (
@@ -170,7 +170,7 @@ Response:
 
 ##### Query
 
-```roomsql
+```sql
 SELECT foo.product_id FROM (
     SELECT user_id, product_id FROM bestseller_product
     GROUP BY user_id, product_id
