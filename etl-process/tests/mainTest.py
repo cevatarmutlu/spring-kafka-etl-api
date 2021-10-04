@@ -9,17 +9,17 @@ import pandas as pd
 
 class TestMain(unittest.TestCase):
     def setUp(self) -> None:
-        self.spark = SparkSession.builder.config("spark.jars", "postgresql-42.2.5.jar").getOrCreate()
-        self.conf = config.get("database")
+        self.spark = SparkSession.builder.config("spark.jars", "src/jars/postgresql-42.2.5.jar").getOrCreate()
+        self.conf = config.get("db")
     
 
     def test_extract(self):
 
         query = 'SELECT * FROM orders LIMIT 3'
 
-        read_table = extract(spark_session=self.spark, conf=self.conf, query=query)
+        extracted_df = extract(spark_session=self.spark, conf=self.conf, query=query)
 
-        self.assertEqual(read_table.count(), 3)
+        self.assertEqual(extracted_df.count(), 3)
 
 
     def test_transform(self):
@@ -54,10 +54,10 @@ class TestMain(unittest.TestCase):
 
         expected_df = self.spark.createDataFrame(data=post_etl_data, schema=schema)
 
-        etl_table = transform(df=df)
+        transformed_df = transform(df=df)
 
-        self.assertEqual(etl_table.count(), expected_df.count())
-        pd.testing.assert_frame_equal(etl_table.toPandas() ,expected_df.toPandas())
+        self.assertEqual(transformed_df.count(), expected_df.count())
+        pd.testing.assert_frame_equal(transformed_df.toPandas() ,expected_df.toPandas())
 
     
     def test_load(self):
@@ -74,7 +74,7 @@ class TestMain(unittest.TestCase):
 
         dummy_df = self.spark.createDataFrame(data=data, schema=schema)
 
-        load(etl_df=dummy_df, conf=self.conf, table='deneme')
+        load(df=dummy_df, conf=self.conf, table='deneme')
 
         expected_df = extract(self.spark, self.conf, 'select * from deneme order by id')
         ## Spark veriyi kendisi sıralıyor. Gelen veri doğru olmasına rağmen test' ten geçmiyor.

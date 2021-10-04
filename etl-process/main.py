@@ -1,7 +1,7 @@
 from pandas._config import config
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
-import src.config as conf
+import src.config as config
 from src.query import query
 
 def extract(spark_session, conf, query):
@@ -21,17 +21,16 @@ def transform(df):
     product_splited = split(df["product_id"], "-")
 
 
-    etl_df = df.select(
+    return df.select(
         "id",
         user_splited.getItem(1).cast("integer").alias("user_id"),
         category_splited.getItem(1).cast("integer").alias("category_id"),
         product_splited.getItem(1).cast("integer").alias("product_id")
     )
 
-    return etl_df
 
-def load(etl_df, conf, table):
-    etl_df.write \
+def load(df, conf, table):
+    df.write \
         .format(conf.get("format")) \
         .option("url", conf.get("url")) \
         .option("dbtable", table) \
@@ -42,19 +41,20 @@ def load(etl_df, conf, table):
         .save()
 
 
-if __name__ == '__main__':
-    db = conf.get("local_db")
+def main():
+    conf = config.get("db")
 
     spark = SparkSession \
         .builder \
         .appName("etl process") \
-        .config("spark.jars", "postgresql-42.2.5.jar") \
+        .config("spark.jars", "src/jars/postgresql-42.2.5.jar") \
         .getOrCreate()
     
-    read_table = extract(spark_session=spark, conf=db, query=query)
+    extracted_df = extract(spark_session=spark, conf=conf, query=query)
 
-    etl_df = transform(df=read_table)
+    transformed_df = transform(df=extracted_df)
 
-    db = conf.get("remote_db")
+    load(df=transformed_df, conf=conf, table="bestseller_product")
 
-    load(etl_df=etl_df, conf=db, table="bestseller_product")
+if __name__ == '__main__':
+    main()
