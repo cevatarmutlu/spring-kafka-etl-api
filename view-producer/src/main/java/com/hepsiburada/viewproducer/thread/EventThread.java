@@ -33,7 +33,6 @@ public class EventThread extends Thread{
     @Override
     public void run() {
         JsonMapper mapper = new JsonMapper();
-        System.out.println(jsonPath);
         File input = new File(jsonPath);
 
         MappingIterator<Event> it = mapper.readerFor(Event.class).readValues(input);
@@ -41,7 +40,6 @@ public class EventThread extends Thread{
         while (it.hasNextValue()) {
 
             Event event = it.nextValue();
-            event.setTimestamp(new Timestamp(System.currentTimeMillis()).getTime());
 
             kafkaProducer.send(topic, event);
 

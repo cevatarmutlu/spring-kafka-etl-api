@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+
 @Component
 public class KafkaProducer {
 
@@ -16,8 +18,9 @@ public class KafkaProducer {
     @Autowired
     private KafkaTemplate<String, Event> kafkaTemplate;
 
-    public void send(String topic ,Event payload) {
+    public void send(String topic, Event payload) {
         LOGGER.info("sending payload='{}' to topic='{}'", payload, topic);
+        payload.setTimestamp(new Timestamp(System.currentTimeMillis()).getTime());
         kafkaTemplate.send(topic, payload);
     }
 
