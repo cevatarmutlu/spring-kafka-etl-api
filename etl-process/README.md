@@ -8,6 +8,11 @@ Code | README | Unittest | Containerization
 ---- | ------ | -------- | ----------------
 :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 
+
+## Diagram
+
+![diagram](images/etl_process.jpg)
+
 ## Dependencies
 
     Python3
@@ -35,8 +40,3 @@ For execute the project, in root directory run belowe command:
 ### Docker
 
     docker run --network='host' case/etl_process
-
-
-## Diagram
-
-![diagram](images/etl_process.jpg)
