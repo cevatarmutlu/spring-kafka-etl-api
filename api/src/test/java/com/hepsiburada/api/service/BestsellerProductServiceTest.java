@@ -40,33 +40,41 @@ public class BestsellerProductServiceTest {
     @MockBean
     private BrowsingHistoryRepository historyRepository;
 
+    public int userID_ifUserHistoryExists = 111;
+    public int userID_ifUserHistoryNotExists = 112;
 
     @Before
     public void setUp() {
-        Mockito.when(historyRepository.findByUserId(111))
+
+        // if user history exists
+        Mockito.when(historyRepository.findByUserId(userID_ifUserHistoryExists))
                 .thenReturn(
                         List.of(
-                                new BrowsingHistory(111, 1, 100, new Timestamp(System.currentTimeMillis())),
-                                new BrowsingHistory(111, 2, 101, new Timestamp(System.currentTimeMillis())),
-                                new BrowsingHistory(111, 3, 102, new Timestamp(System.currentTimeMillis())),
-                                new BrowsingHistory(111, 4, 103, new Timestamp(System.currentTimeMillis()))
+                                new BrowsingHistory(userID_ifUserHistoryExists, 1, 100, new Timestamp(System.currentTimeMillis())),
+                                new BrowsingHistory(userID_ifUserHistoryExists, 2, 101, new Timestamp(System.currentTimeMillis())),
+                                new BrowsingHistory(userID_ifUserHistoryExists, 3, 102, new Timestamp(System.currentTimeMillis())),
+                                new BrowsingHistory(userID_ifUserHistoryExists, 4, 103, new Timestamp(System.currentTimeMillis()))
                         )
                 );
 
-        Mockito.when(historyRepository.findByUserId(112))
+        Mockito.doReturn(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+                .when(productRepository).getBestsellerProductsIfUserHistoryExist(userID_ifUserHistoryExists);
+
+
+
+        // if user history not exists
+        Mockito.when(historyRepository.findByUserId(userID_ifUserHistoryNotExists))
                 .thenReturn(List.of());
 
-
-
-        Mockito.doReturn(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)).when(productRepository).getBestsellerProductsIfUserHistoryExist(111);
-        Mockito.doReturn(List.of(100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110)).when(productRepository).getBestsellerProductsIfUserHistoryNotExist();
+        Mockito.doReturn(List.of(100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110))
+                .when(productRepository).getBestsellerProductsIfUserHistoryNotExist();
     }
 
 
     @Test
     public void existUserHistoryTest_whenUserHasHistoryOrNot() {
-        Assert.assertTrue(productService.existUserHistory(111));
-        Assert.assertFalse(productService.existUserHistory(112));
+        Assert.assertTrue(productService.isUserHistoryExists(userID_ifUserHistoryExists));
+        Assert.assertFalse(productService.isUserHistoryExists(userID_ifUserHistoryNotExists));
     }
 
     @Test
@@ -74,20 +82,20 @@ public class BestsellerProductServiceTest {
 
         // User has history
         LinkedHashMap<String, Object> userHasHistoryProducts = new LinkedHashMap<>();
-        userHasHistoryProducts.put("user-id", 111);
+        userHasHistoryProducts.put("user-id", userID_ifUserHistoryExists);
         userHasHistoryProducts.put("products", List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
         userHasHistoryProducts.put("type", "personalized");
 
-        Assert.assertEquals(productService.getBestsellerProduct(111), userHasHistoryProducts);
+        Assert.assertEquals(productService.getBestsellerProduct(userID_ifUserHistoryExists), userHasHistoryProducts);
 
 
         // User has not history
         LinkedHashMap<String, Object> userHasNotHistoryProducts = new LinkedHashMap<>();
-        userHasNotHistoryProducts.put("user-id", 112);
+        userHasNotHistoryProducts.put("user-id", userID_ifUserHistoryNotExists);
         userHasNotHistoryProducts.put("products", List.of(100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110));
         userHasNotHistoryProducts.put("type", "non-personalized");
 
-        Assert.assertEquals(productService.getBestsellerProduct(112), userHasNotHistoryProducts);
+        Assert.assertEquals(productService.getBestsellerProduct(userID_ifUserHistoryNotExists), userHasNotHistoryProducts);
 
 
     }

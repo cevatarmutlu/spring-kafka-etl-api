@@ -1,7 +1,7 @@
 package com.hepsiburada.streamreader.consumer;
 
 import com.hepsiburada.streamreader.generator.BrowsingHistoryGenerator;
-import com.hepsiburada.streamreader.model.BrowsingHistory;
+import com.hepsiburada.streamreader.model.remote.BrowsingHistory;
 import com.hepsiburada.streamreader.model.Event;
 //import com.hepsiburada.streamreader.service.ProductService;
 import com.hepsiburada.streamreader.service.BrowsingHistoryService;

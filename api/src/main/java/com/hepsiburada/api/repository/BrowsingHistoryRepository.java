@@ -16,10 +16,11 @@ public interface BrowsingHistoryRepository extends CrudRepository<BrowsingHistor
     @Query(
             value = "SELECT product_id FROM browsing_history\n" +
                     "WHERE user_id = :userId\n" +
-                    "ORDER BY timestamp DESC",
+                    "ORDER BY timestamp DESC" +
+                    "LIMIT 10",
             nativeQuery = true
     )
-    List<?> getTenViewedProduct(@Param("userId") int userId);
+    List<?> getViewedProduct(@Param("userId") int userId);
 
     @Transactional
     @Modifying
@@ -28,7 +29,7 @@ public interface BrowsingHistoryRepository extends CrudRepository<BrowsingHistor
                     "WHERE user_id = :userId AND product_id = :productId",
             nativeQuery = true
     )
-    void deleteProduct(@Param("userId") int userId, @Param("productId") int productId);
+    int deleteProduct(@Param("userId") int userId, @Param("productId") int productId);
 
 
     List<BrowsingHistory> findByUserId(int userId);

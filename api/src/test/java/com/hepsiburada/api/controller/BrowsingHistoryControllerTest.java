@@ -3,7 +3,6 @@ package com.hepsiburada.api.controller;
 import com.hepsiburada.api.service.BrowsingHistoryService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -37,7 +36,7 @@ public class BrowsingHistoryControllerTest {
         List<Integer> products = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         Mockito.doReturn(products)
-                .when(historyService).getTenViewedProduct(111);
+                .when(historyService).getViewedProduct(111);
 
         mvc.perform(get("/api/history/tenproduct")
                 .contentType(MediaType.APPLICATION_JSON)

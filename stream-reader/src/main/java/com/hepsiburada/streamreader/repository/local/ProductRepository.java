@@ -1,6 +1,6 @@
-package com.hepsiburada.streamreader.repository;
+package com.hepsiburada.streamreader.repository.local;
 
-import com.hepsiburada.streamreader.model.Product;
+import com.hepsiburada.streamreader.model.local.Product;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

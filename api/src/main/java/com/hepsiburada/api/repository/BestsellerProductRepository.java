@@ -21,7 +21,7 @@ public interface BestsellerProductRepository extends CrudRepository<BestsellerPr
                         ")\n" +
                         "GROUP BY user_id, product_id\n" +
                     ") AS foo\n" +
-                    "GROUP BY product_id, user_id\n" +
+                    "GROUP BY product_id\n" +
                     "ORDER BY count(*) DESC \n" +
                     "LIMIT 10",
             nativeQuery = true
@@ -34,7 +34,7 @@ public interface BestsellerProductRepository extends CrudRepository<BestsellerPr
                         "SELECT user_id, product_id FROM bestseller_product\n" +
                         "GROUP BY user_id, product_id" +
                     ") AS foo\n" +
-                    "GROUP BY product_id, user_id\n" +
+                    "GROUP BY product_id\n" +
                     "ORDER BY count(*) DESC\n" +
                     "LIMIT 10",
             nativeQuery = true

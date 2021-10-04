@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -33,13 +34,15 @@ public class BrowsingHistoryServiceTest {
     @MockBean
     private BrowsingHistoryRepository historyRepository;
 
-    private List<?> dummyProducts;
 
     @Before
     public void setUp() {
-        dummyProducts = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        List<?> ifExistFiveProducts = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
-        Mockito.doReturn(dummyProducts).when(historyRepository).getTenViewedProduct(111);
+        Mockito.doReturn(ifExistFiveProducts).when(historyRepository).getViewedProduct(111);
+
+        List<?> ifNotExistFiveProducts = List.of();
+        Mockito.doReturn(ifNotExistFiveProducts).when(historyRepository).getViewedProduct(112);
 
     }
 
@@ -47,10 +50,29 @@ public class BrowsingHistoryServiceTest {
     @Test
     public void getTenViewedProductTest() {
 
-        List<?> products = historyService.getTenViewedProduct(111);
+        // if exist five products
+        LinkedHashMap<String, Object> result = historyService.getViewedProduct(111);
 
-        Assert.assertEquals(products, dummyProducts);
-        Assert.assertEquals(products.get(0), dummyProducts.get(0));
+        LinkedHashMap<String, Object> expected_result = new LinkedHashMap<>();
+        expected_result.put("user-id", 111);
+        expected_result.put("products", List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+        expected_result.put("type", "personalized");
+
+        Assert.assertEquals(expected_result, result);
+
+
+        // if not exist five products
+        result = historyService.getViewedProduct(112);
+
+        expected_result = new LinkedHashMap<>();
+        expected_result.put("user-id", 112);
+        expected_result.put("products", List.of());
+        expected_result.put("type", "personalized");
+
+        Assert.assertEquals(expected_result, result);
+
+
+
     }
 
 }

@@ -43,7 +43,7 @@ def load(etl_df, conf, table):
 
 
 if __name__ == '__main__':
-    db = conf.get("database")
+    db = conf.get("local_db")
 
     spark = SparkSession \
         .builder \
@@ -54,5 +54,7 @@ if __name__ == '__main__':
     read_table = extract(spark_session=spark, conf=db, query=query)
 
     etl_df = transform(df=read_table)
+
+    db = conf.get("remote_db")
 
     load(etl_df=etl_df, conf=db, table="bestseller_product")

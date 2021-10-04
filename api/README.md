@@ -9,21 +9,99 @@ API, return data below request:
   * If given user has history, using the user history for extract most three category. Then use these categories to recommendation ten products bought (last month) by the most distinct users.
   * If given user has not history, recommend ten products bought (last month) by the most distinct users.
 
+
+Code | README | Unittest | Containerization
+:heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
+
+## Dependencies
+
+    Java-11
+    Maven
+    PostgreSQL
+
+## Install
+
+### Local
+
+    mnv clean install
+
+### Docker
+
+At this project root directory: 
+
+    docker build . --tag case/api
+
+## Run
+
+### Local
+
+    mvn spring-boot:run
+
+### Docker
+  
+    docker run -p 8080:8080 --network="host" case/api
+
+
 ## Diagram
 
 ![diagram](images/diagram.jpg)
 
 ### Browsing History
 
-#### GET Request Query
+#### GET Request
+
+Last ten products viewed by a given user.
+
+`inputs: user-id`
+
+##### Example Request and Response
+
+Request:
+
+    http://localhost:8080/api/history/products?userId=111
+
+Response:
+
+    {
+      "user-id": "111",
+      "products": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      "type": "personalized"
+    }
+
+ If number of products fewer than 5, return Empty list. 
+
+##### Query
 
 ```roomsql
 SELECT product_id FROM browsing_history
 WHERE user_id = :userId
 ORDER BY timestamp DESC
+LIMIT 10
 ```
 
-#### DELETE Request Query
+#### DELETE Request
+
+Delete a product from given user.
+
+`inputs: userId, productId`
+
+##### Example Request and Response
+
+Request:
+
+    http://localhost:8080/api/history/delete?userId=84&productId=13
+
+Response:
+    
+    {
+      "user-id": 84,
+      "product-id": 3,
+      "success": false
+    }
+
+If product deleted is unsuccessful then return `"success": false`.
+
+##### Query
 
 ```roomsql
 DELETE FROM browsing_history
@@ -32,7 +110,27 @@ WHERE user_id = :userId AND product_id = :productId
 
 ### Bestseller Product
 
-#### GET REQUEST QUERY: If user has history
+`inputs: userId`
+
+#### GET REQUEST: If user has history
+
+If given user has history, using the user history for extract most three category. Then use these categories to recommendation ten products bought (last month) by the most distinct users.
+
+##### Example Request and Response
+
+Request:
+  
+    http://localhost:8080/api/bestseller/products?userId=84
+
+Response:
+
+    {
+      "user-id": 84,
+      "products": [66, 158, 182, 45, 44, 31, 35, 72, 30, 59],
+      "type": "personalized"
+    }
+
+##### Query
 
 ```roomsql
 SELECT foo.product_id FROM (
@@ -46,33 +144,37 @@ SELECT foo.product_id FROM (
     )
     GROUP BY user_id, product_id
     ) AS foo
-GROUP BY product_id, user_id
+GROUP BY product_id
 ORDER BY count(*) DESC
 LIMIT 10
 ```
 
-#### GET REQUEST QUERY: If user has not history
+#### GET REQUEST: If user has not history
+
+If given user has not history, recommend ten products bought (last month) by the most distinct users.
+
+##### Example Request and Response
+
+Request:
+
+    http://localhost:8080/api/bestseller/products?userId=840
+
+Response:
+
+    {
+      "user-id": 84,
+      "products": [170, 48, 83, 66, 188, 52, 11, 168, 39, 158],
+      "type": "non-personalized"
+    }
+
+##### Query
 
 ```roomsql
 SELECT foo.product_id FROM (
     SELECT user_id, product_id FROM bestseller_product
     GROUP BY user_id, product_id
     ) AS foo
-GROUP BY product_id, user_id
+GROUP BY product_id
 ORDER BY count(*) DESC
 LIMIT 10
 ```
-
-## Dependencies
-    
-    Java-11
-    Maven
-    PostgreSQL
-
-## Install
-
-    mnv install
-
-## Run
-    
-    mvn spring-boot:run

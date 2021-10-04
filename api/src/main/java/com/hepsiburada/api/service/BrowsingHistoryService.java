@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Service
@@ -13,16 +14,30 @@ public class BrowsingHistoryService {
     @Autowired
     private BrowsingHistoryRepository historyRepository;
 
-    public List<?> getTenViewedProduct(int userId) {
-        List<?> products = historyRepository.getTenViewedProduct(userId);
-        if (products.size() < 3) {
-            return new ArrayList<>();
-        }
-        return products;
+    public LinkedHashMap<String, Object> getViewedProduct(int userId) {
+
+        LinkedHashMap<String, Object> result = new LinkedHashMap<>(); // HashMap order is wrong.
+        result.put("user-id", userId);
+
+        List<?> products = historyRepository.getViewedProduct(userId);
+
+        if (products.size() < 5)
+            result.put("products", new ArrayList<>());
+        else
+            result.put("products", products);
+
+        result.put("type", "personalized");
+        return result;
     }
 
-    public void deleteProductFromHistory(int userId, int productId) {
-        historyRepository.deleteProduct(userId, productId);
+    public LinkedHashMap<String, Object> deleteProductFromHistory(int userId, int productId) {
+
+        LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+        result.put("user-id", userId);
+        result.put("product-id", productId);
+        result.put("success", historyRepository.deleteProduct(userId, productId) != 0);
+
+        return result;
     }
 
 
