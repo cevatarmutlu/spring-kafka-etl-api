@@ -1,4 +1,4 @@
-package com.hepsiburada.streamreader.model.remote.serialize;
+package com.hepsiburada.streamreader.model.serialize;
 
 import lombok.*;
 

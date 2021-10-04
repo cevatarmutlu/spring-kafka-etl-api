@@ -1,6 +1,6 @@
-package com.hepsiburada.streamreader.model.remote;
+package com.hepsiburada.streamreader.model;
 
-import com.hepsiburada.streamreader.model.remote.serialize.BrowsingHistoryId;
+import com.hepsiburada.streamreader.model.serialize.BrowsingHistoryId;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

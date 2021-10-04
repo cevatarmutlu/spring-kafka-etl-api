@@ -1,6 +1,6 @@
 package com.hepsiburada.streamreader.service;
 
-import com.hepsiburada.streamreader.repository.local.ProductRepository;
+import com.hepsiburada.streamreader.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

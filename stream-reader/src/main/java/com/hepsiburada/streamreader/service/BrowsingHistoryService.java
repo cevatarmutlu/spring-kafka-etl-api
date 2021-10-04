@@ -1,7 +1,7 @@
 package com.hepsiburada.streamreader.service;
 
-import com.hepsiburada.streamreader.model.remote.BrowsingHistory;
-import com.hepsiburada.streamreader.repository.remote.BrowsingHistoryRepository;
+import com.hepsiburada.streamreader.model.BrowsingHistory;
+import com.hepsiburada.streamreader.repository.BrowsingHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

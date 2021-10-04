@@ -1,4 +1,4 @@
-package com.hepsiburada.streamreader.model.local;
+package com.hepsiburada.streamreader.model;
 
 import lombok.Getter;
 import lombok.Setter;

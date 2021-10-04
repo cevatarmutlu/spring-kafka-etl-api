@@ -1,6 +1,7 @@
 package com.hepsiburada.streamreader.controller;
 
 import com.hepsiburada.streamreader.consumer.KafkaConsumer;
+import com.hepsiburada.streamreader.model.BrowsingHistory;
 import com.hepsiburada.streamreader.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +15,14 @@ public class StreamReaderController {
     @Autowired
     KafkaConsumer kafkaConsumer;
 
-    @GetMapping("aa")
-    public Event consume() {
+    @GetMapping("/payload")
+    public Event payload() {
         return kafkaConsumer.getPayload();
+    }
+
+    @GetMapping("/history")
+    public BrowsingHistory history() {
+        return kafkaConsumer.getHistory();
     }
 
 }

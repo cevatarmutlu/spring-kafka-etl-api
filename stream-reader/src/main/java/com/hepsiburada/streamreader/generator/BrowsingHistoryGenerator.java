@@ -1,6 +1,6 @@
 package com.hepsiburada.streamreader.generator;
 
-import com.hepsiburada.streamreader.model.remote.BrowsingHistory;
+import com.hepsiburada.streamreader.model.BrowsingHistory;
 import com.hepsiburada.streamreader.model.Event;
 import com.hepsiburada.streamreader.service.ProductService;
 import lombok.RequiredArgsConstructor;

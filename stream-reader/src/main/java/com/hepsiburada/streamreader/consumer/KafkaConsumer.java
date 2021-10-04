@@ -1,7 +1,7 @@
 package com.hepsiburada.streamreader.consumer;
 
 import com.hepsiburada.streamreader.generator.BrowsingHistoryGenerator;
-import com.hepsiburada.streamreader.model.remote.BrowsingHistory;
+import com.hepsiburada.streamreader.model.BrowsingHistory;
 import com.hepsiburada.streamreader.model.Event;
 //import com.hepsiburada.streamreader.service.ProductService;
 import com.hepsiburada.streamreader.service.BrowsingHistoryService;
@@ -30,18 +30,20 @@ public class KafkaConsumer {
 
     private CountDownLatch latch = new CountDownLatch(1);
     private Event payload = null;
+    private BrowsingHistory history = null;
 
     @KafkaListener(topics = "${kafka.topic}", id = "${kafka.group-id}")
     public void receive(@Payload Event payload) {
         LOGGER.info("received data: {} ", payload);
-
-        latch.countDown();
 
         BrowsingHistoryGenerator generator = new BrowsingHistoryGenerator(payload, productService);
         BrowsingHistory history = generator.generate();
         historyService.saveOrUpdate(history);
 
         setPayload(payload);
+        setHistory(history);
         LOGGER.info("write data: {} ", history);
+
+        latch.countDown();
     }
 }
