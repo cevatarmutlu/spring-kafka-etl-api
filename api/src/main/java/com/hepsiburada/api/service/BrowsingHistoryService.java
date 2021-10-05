@@ -1,6 +1,8 @@
 package com.hepsiburada.api.service;
 
 import com.hepsiburada.api.repository.BrowsingHistoryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +16,15 @@ public class BrowsingHistoryService {
     @Autowired
     private BrowsingHistoryRepository historyRepository;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BrowsingHistoryService.class);
+
     public LinkedHashMap<String, Object> getViewedProduct(int userId) {
 
         LinkedHashMap<String, Object> result = new LinkedHashMap<>(); // HashMap order is wrong.
         result.put("user-id", userId);
 
         List<?> products = historyRepository.getViewedProduct(userId);
+        LOGGER.info("fetch data from database: {}", products);
 
         if (products.size() < 5)
             result.put("products", new ArrayList<>());
@@ -27,6 +32,8 @@ public class BrowsingHistoryService {
             result.put("products", products);
 
         result.put("type", "personalized");
+
+        LOGGER.info("send response: {}", result);
         return result;
     }
 
