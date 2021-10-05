@@ -19,9 +19,9 @@ public class KafkaProducer {
     private KafkaTemplate<String, Event> kafkaTemplate;
 
     public void send(String topic, Event payload) {
-        LOGGER.info("sending payload='{}' to topic='{}'", payload, topic);
         payload.setTimestamp(new Timestamp(System.currentTimeMillis()).getTime());
         kafkaTemplate.send(topic, payload);
+        LOGGER.info("sending payload='{}' to topic='{}'", payload, topic);
     }
 
 }
