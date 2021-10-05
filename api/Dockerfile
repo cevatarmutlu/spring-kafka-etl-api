@@ -6,4 +6,4 @@ RUN sh -c 'touch /api.jar'
 
 EXPOSE 8080
 
-ENTRYPOINT [ "sh", "-c","java -XX:+UseStringDeduplication -jar /api.jar" ]
+ENTRYPOINT [ "sh", "-c","java -XX:+UseStringDeduplication -jar /api.jar --spring.datasource.url=jdbc:postgresql://postgres:5432/data-db" ]

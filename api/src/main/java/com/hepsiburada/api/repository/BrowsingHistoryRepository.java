@@ -16,7 +16,7 @@ public interface BrowsingHistoryRepository extends CrudRepository<BrowsingHistor
     @Query(
             value = "SELECT product_id FROM browsing_history\n" +
                     "WHERE user_id = :userId\n" +
-                    "ORDER BY timestamp DESC" +
+                    "ORDER BY timestamp DESC\n" +
                     "LIMIT 10",
             nativeQuery = true
     )
