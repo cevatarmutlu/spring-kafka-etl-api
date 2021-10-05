@@ -35,7 +35,7 @@ For execute the project, in root directory run belowe command:
 
 For execute the project, in root directory run belowe command:
 
-    spark-submit --driver-class-path src/jars/postgresql-42.2.5.jar main.py
+    python3 main.py
 
 ### Docker
 
