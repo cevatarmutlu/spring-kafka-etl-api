@@ -3,6 +3,16 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 import src.config as config
 from src.query import query
+import argparse
+
+def getVariables():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-k', '--kafka', type=bool)
+
+    args = parser.parse_args()
+
+    kafka = args.kafka
+    return kafka
 
 def extract(spark_session, conf, query):
     return spark_session.read \
@@ -42,7 +52,11 @@ def load(df, conf, table):
 
 
 def main():
+    kafka = getVariables()
     conf = config.get("db")
+
+    if kafka:
+        conf["url"] = conf.get("url").replace("localhost", "postgres")
 
     spark = SparkSession \
         .builder \
