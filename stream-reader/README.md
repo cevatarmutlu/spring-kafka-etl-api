@@ -4,7 +4,7 @@ Stream-Reader reads `Event` from Kafka and transform the event to `BrowsingHisto
 
 Unnecessary fields not selected in the event for generate `BrowsingHistory`.
 
-`BrowsingHistory` has `category_id` because if `BrowsingHistory` has not `category_id`, to find most three category joins `browsing_history` and `products` table. So that's more costly to find most tree category than this solution . 
+`BrowsingHistory` has `category_id` because if `BrowsingHistory` has not `category_id`, to find most three category joins `browsing_history` and `products` table. So that's more costly to find most tree category than this solution. 
 
 Code | README | Unittest | Containerization
 ---- | ------ | -------- | ----------------

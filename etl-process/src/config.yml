@@ -1,5 +1,12 @@
-db:
+local_db:
   format: jdbc
+  url: jdbc:postgresql://localhost:5432/data-db
+  driver: org.postgresql.Driver
+  user: postgres
+  password: 123456
+
+remote_db:
+    format: jdbc
   url: jdbc:postgresql://localhost:5432/data-db
   driver: org.postgresql.Driver
   user: postgres
