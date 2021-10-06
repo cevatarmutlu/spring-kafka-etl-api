@@ -155,7 +155,6 @@ LIMIT 10
 
     Java-11
     Maven
-    PostgreSQL
 
 ## Install
 

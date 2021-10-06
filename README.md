@@ -79,4 +79,6 @@ If you don't want to install anything so run below command:
     docker-compose -f project-docker-compose.yml up -d
 
 
-If you want to install applications single by single except above installing. For this, click to module name you want to install.
+If you want to install applications single by single except above installing. For this, run below command and click to module name you want to install.
+    
+    docker-compose up -d
