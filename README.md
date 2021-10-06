@@ -11,9 +11,9 @@ Also, with API return ten viewed products given userId and recommend products gi
 
 Module | Use Technology | Description
 ------ | -------------- | -----------
-[view-producer](view-producer) | Java Spring | Reads product-views.json file by line by and transform the line to Event class and writes to Kafka.
-[stream-reader](stream-reader) | Java Spring | Reads Event from Kafka and transform the event to BrowsingHistory class and the class write to PostgreSQL Database.
-[etl-process](etl-process) | PySpark | Implements ETL to orders, products and order_items tables. These tables joins bestseller_product table.
+[view-producer](view-producer) | Java Spring | Reads `product-views.json` file by line by and transform the line to `Event` class and writes to Kafka.
+[stream-reader](stream-reader) | Java Spring | Reads event from Kafka and transform the event to `BrowsingHistory` class and the class write to PostgreSQL Database.
+[etl-process](etl-process) | PySpark | Implements ETL to `orders`, `products` and `order_items` tables. These tables joins bestseller_product table.
 [api](api) | Java Spring | Returns response for specific requests.
 
 > Click the module name to read its own README

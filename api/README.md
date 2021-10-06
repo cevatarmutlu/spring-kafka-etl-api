@@ -14,35 +14,6 @@ Code | README | Unittest | Containerization
 ---- | ------ | -------- | ----------------
 :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 
-## Dependencies
-
-    Java-11
-    Maven
-    PostgreSQL
-
-## Install
-
-### Local
-
-    mnv clean install
-
-### Docker
-
-At this project root directory: 
-
-    docker build . --tag case/api
-
-## Run
-
-### Local
-
-    mvn spring-boot:run
-
-### Docker
-  
-    docker run -p 8080:8080 --network="host" case/api
-
-
 ## Diagram
 
 ![diagram](images/diagram.jpg)
@@ -138,7 +109,7 @@ SELECT foo.product_id FROM (
     SELECT user_id, product_id FROM bestseller_product
     WHERE category_id IN (
         SELECT category_id FROM browsing_history
-        WHERE user_id = 103
+        WHERE user_id = 84
         GROUP BY category_id, product_id
         ORDER BY count(product_id) DESC
         LIMIT 3
@@ -163,7 +134,7 @@ Request:
 Response:
 
     {
-      "user-id": 84,
+      "user-id": 84000,
       "products": [170, 48, 83, 66, 188, 52, 11, 168, 39, 158],
       "type": "non-personalized"
     }
@@ -179,3 +150,31 @@ GROUP BY product_id
 ORDER BY count(*) DESC
 LIMIT 10
 ```
+
+## Dependencies
+
+    Java-11
+    Maven
+    PostgreSQL
+
+## Install
+
+### Local
+
+    mnv clean install
+
+### Docker
+
+At this project root directory:
+
+    docker build . --tag case/api
+
+## Run
+
+### Local
+
+    mvn spring-boot:run
+
+### Docker
+
+    docker run -p 8080:8080 --network="host" case/api
