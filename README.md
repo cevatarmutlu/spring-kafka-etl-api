@@ -1,4 +1,4 @@
-## spring-kafka-etl-api
+## Spring-Kafka-Etl-Api
 
 This project occurs four application. The project read ndjson file that named `product-views.json` by line by and write the line to Kafka. And then, reads the line, that written to Kafka, from Kafka then write to PostgreSQL.
 
